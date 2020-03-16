@@ -803,6 +803,18 @@ g_PluginInfo =
 			Handler = HandleConsoleDeOp,
 			HelpString = "Add a player to the Default rank.",
 		},
+
+		["msg"] =
+		{
+			Handler = HandleConsoleTell,
+			HelpString = "Sends a private message to a player.",
+		},
+
+		["r"] =
+		{
+			Handler = HandleConsoleR,
+			HelpString = "Replies to the latest private message you received.",
+		},
 		
 		["regen"] =
 		{
@@ -838,6 +850,12 @@ g_PluginInfo =
 		{
 			Handler =  HandleConsoleSay,
 			HelpString = "Sends a chat message to all players.",
+		},
+
+		["tell"] =
+		{
+			Handler = HandleConsoleTell,
+			HelpString = "Sends a private message to a player.",
 		},
 
 		["time"] = 
