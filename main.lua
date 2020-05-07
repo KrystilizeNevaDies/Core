@@ -1,33 +1,9 @@
 -- main.lua
-
 -- Implements the main plugin entrypoint
 
-
-
-
-
--- Configuration
---  Use prefixes or not.
---  If set to true, messages are prefixed, e. g. "[FATAL]". If false, messages are colored.
-g_UsePrefixes = true
-
-
-
-
-
--- Global variables
-WorldsSpawnProtect = {}
-WorldsWorldLimit = {}
-WorldsWorldDifficulty = {}
-lastsender = {}
-
-
-
-
--- Called by Cuberite on plugin start to initialize the plugin
 function Initialize(Plugin)
-	Plugin:SetName("Core")
-	Plugin:SetVersion(tonumber(g_PluginInfo["Version"]))
+	Plugin:SetName(g_PluginInfo.Name)
+	Plugin:SetVersion(g_PluginInfo.Version)
 
 	-- Register for all hooks needed
 	cPluginManager:AddHook(cPluginManager.HOOK_BLOCK_SPREAD,          OnBlockSpread)
@@ -41,26 +17,20 @@ function Initialize(Plugin)
 	cPluginManager:AddHook(cPluginManager.HOOK_PLAYER_MOVING,         OnPlayerMoving)
 	cPluginManager:AddHook(cPluginManager.HOOK_PLAYER_PLACING_BLOCK,  OnPlayerPlacingBlock)
 	cPluginManager:AddHook(cPluginManager.HOOK_PLAYER_RIGHT_CLICK,    OnPlayerRightClick)
-	cPluginManager:AddHook(cPluginManager.HOOK_SPAWNING_ENTITY,       OnSpawningEntity)
+	cPluginManager:AddHook(cPluginManager.HOOK_SPAWNING_MONSTER,      OnSpawningMonster)
 	cPluginManager:AddHook(cPluginManager.HOOK_TAKE_DAMAGE,           OnTakeDamage)
 	cPluginManager:AddHook(cPluginManager.HOOK_TICK,                  OnTick)
 	cPluginManager:AddHook(cPluginManager.HOOK_WORLD_TICK,            OnWorldTick)
 
 	-- Bind ingame commands:
-
-	-- Load the InfoReg shared library:
 	dofile(cPluginManager:GetPluginsPath() .. "/InfoReg.lua")
-
-	-- Bind all the commands:
 	RegisterPluginInfoCommands()
-
-	-- Bind all the console commands:
 	RegisterPluginInfoConsoleCommands()
 
 	-- Load SpawnProtection and WorldLimit settings for individual worlds:
 	cRoot:Get():ForEachWorld(
-		function (a_World)
-			LoadWorldSettings(a_World)
+		function (World)
+			LoadWorldSettings(World)
 		end
 	)
 
@@ -70,8 +40,8 @@ function Initialize(Plugin)
 	-- Initialize the whitelist, load its DB, do whatever processing it needs on startup:
 	InitializeWhitelist()
 
-	-- Initialize the Item Blacklist (the list of items that cannot be obtained using the give command)
-	IntializeItemBlacklist( Plugin )
+	-- Initialize the Item Blacklist (the list of items that cannot be obtained using the give command):
+	IntializeItemBlacklist(Plugin)
 
 	-- Add webadmin tabs:
 	Plugin:AddWebTab("Manage Server",   HandleRequest_ManageServer)
@@ -85,14 +55,15 @@ function Initialize(Plugin)
 	Plugin:AddWebTab("Ranks",           HandleRequest_Ranks)
 	Plugin:AddWebTab("Player Ranks",    HandleRequest_PlayerRanks)
 
+	-- Load the message of the day from file, and cache it:
 	LoadMOTD()
 
-	WEBLOGINFO("Core is initialized")
+	WEBLOGINFO("Core is initialised")
 	LOG("Initialised " .. Plugin:GetName() .. " v." .. Plugin:GetVersion())
 
 	return true
 end
 
 function OnDisable()
-	LOG( "Disabled Core!" )
+	LOG("Disabled " .. cPluginManager:GetCurrentPlugin():GetName() .. "!")
 end

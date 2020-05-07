@@ -215,6 +215,13 @@ g_PluginInfo =
 			HelpString = "Shows the message of the day.",
 		},
 
+		["/numchunks"] =
+		{
+			Permission = "core.numchunks",
+			Handler =  HandleNumChunksCommand,
+			HelpString = "Shows number of chunks currently loaded.",
+		},
+
 		["/plugins"] = 
 		{
 			Alias = "/pl",
@@ -232,6 +239,7 @@ g_PluginInfo =
 
 		["/portal"] =
 		{
+			Alias = "/world",
 			Permission = "core.portal",
 			Handler = HandlePortalCommand,
 			HelpString = "Moves your player to a different world.",
@@ -256,6 +264,13 @@ g_PluginInfo =
 			Permission = "core.rank",
 			Handler = HandleOpCommand,
 			HelpString = "Add a player to the administrator rank.",
+		},
+
+		["/players"] =
+		{
+			Permission = "core.players",
+			Handler =  HandlePlayersCommand,
+			HelpString = "Shows a list of all connected players.",
 		},
 
 		["/regen"] =
@@ -492,6 +507,13 @@ g_PluginInfo =
 			Permission = "core.unban",
 			Handler = HandleUnbanCommand,
 			HelpString = "Unbans a player.",
+		},
+
+		["/unloadchunks"] =
+		{
+			Permission = "core.unloadchunks",
+			Handler = HandleUnloadChunksCommand,
+			HelpString = "Unloads all unused chunks.",
 		},
 
 		["/unrank"] =
@@ -830,6 +852,18 @@ g_PluginInfo =
 			HelpString = "Add a player to the Admin rank.",
 		},
 
+		["msg"] =
+		{
+			Handler = HandleConsoleTell,
+			HelpString = "Sends a private message to a player.",
+		},
+
+		["r"] =
+		{
+			Handler = HandleConsoleR,
+			HelpString = "Replies to the latest private message you received.",
+		},
+
 		["ranks"] =
 		{
 			Handler =  HandleConsoleListRanks,
@@ -853,6 +887,12 @@ g_PluginInfo =
 				}
 			},
 		},  -- regen
+
+		["tell"] =
+		{
+			Handler = HandleConsoleTell,
+			HelpString = "Sends a private message to a player.",
+		},
 
 		["save-all"] =
 		{
@@ -882,6 +922,12 @@ g_PluginInfo =
 		{
 			Handler = HandleConsoleSpawn,
 			HelpString = "Returns a player to the spawn point.",
+		},
+
+		["summon"] = 
+		{
+			Handler = HandleConsoleSummon,
+			HelpString = "Summons an entity in the world.",
 		},
 
 		["time"] = 
@@ -1033,7 +1079,7 @@ g_PluginInfo =
 
 		["unloadchunks"] =
 		{
-			Handler = HandleConsoleUnload,
+			Handler = HandleConsoleUnloadChunks,
 			HelpString = "Unloads all unused chunks.",
 		},
 		
@@ -1070,7 +1116,7 @@ g_PluginInfo =
 		
 		["weather"] =
 		{
-			Handler =  HandleConsoleWeather,
+			Handler = HandleConsoleWeather,
 			HelpString = "Changes the world's weather.",
 			ParameterCombinations =
 			{
@@ -1139,6 +1185,12 @@ g_PluginInfo =
 				},
 			},  -- Subcommands
 		},  -- whitelist
+
+		["worlds"] = 
+		{
+			Handler = HandleConsoleWorlds,
+			HelpString = "Shows a list of all the worlds.",
+		},
 	},  -- ConsoleCommands
 	Permissions = 
 	{
